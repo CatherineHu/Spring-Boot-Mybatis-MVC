@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<!--加载属性文件 -->
+	<properties resource="application.properties" />
+	<!-- context:生成一组对象的环境 id:必选，上下文id，用于在生成错误时提示 defaultModelType:指定生成对象的样式 
+		1，conditional：类似hierarchical； 2，flat：所有内容（主键，blob）等全部生成在一个对象中； 3，hierarchical：主键生成一个XXKey对象(key 
+		class)，Blob等单独生成一个对象，其他简单属性在一个对象中(record class) targetRuntime: 1，MyBatis3：默认的值，生成基于MyBatis3.x以上版本的内容，包括XXXBySample； 
+		2，MyBatis3Simple：类似MyBatis3，只是不生成XXXBySample； introspectedColumnImpl：类全限定名，用于扩展MBG -->
+	<context id="context1" defaultModelType="hierarchical"
+		targetRuntime="MyBatis3Simple">
+		<!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表； 一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖 -->
+		<property name="autoDelimitKeywords" value="false" />
+		<!-- 生成的Java文件的编码 -->
+		<property name="javaFileEncoding" value="UTF-8" />
+		<!-- 格式化java代码 -->
+		<property name="javaFormatter"
+			value="org.mybatis.generator.api.dom.DefaultJavaFormatter" />
+		<!-- 格式化XML代码 -->
+		<property name="xmlFormatter"
+			value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
+
+		<!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
+		<property name="beginningDelimiter" value="`" />
+		<property name="endingDelimiter" value="`" />
+		<!-- 实现自定义的代码生成器plugin -->
+		<!-- <plugin type="org.mybatis.PaginationPlugin" /> -->
+		<commentGenerator>
+			<property name="suppressDate" value="true" />
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		<!-- 数据库连接URL，用户名，密码 -->
+		<jdbcConnection
+			driverClass="${spring.datasource.driver-class-name}"
+			connectionURL="${spring.datasource.url}"
+			userId="${spring.datasource.username}"
+			password="${spring.datasource.password}">
+			<property name="nullCatalogMeansCurrent" value="true" />
+		</jdbcConnection>
+		<!-- java类型处理器 用于处理DB中的类型到Java中的类型，默认使用JavaTypeResolverDefaultImpl； 注意一点，默认会先尝试使用Integer，Long，Short等来对应DECIMAL和 
+			NUMERIC数据类型； -->
+		<javaTypeResolver
+			type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
+			<!-- true：使用BigDecimal对应DECIMAL和 NUMERIC数据类型 false：默认, scale>0;length>18：使用BigDecimal; 
+				scale=0;length[10,18]：使用Long； scale=0;length[5,9]：使用Integer； scale=0;length<5：使用Short； -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+		<!--生成模型的包名和位置 -->
+		<javaModelGenerator
+			targetPackage="com.kai.demo.model" targetProject="demo/src/main/java">
+			<!-- for MyBatis3/MyBatis3Simple 自动为每一个生成的类创建一个构造方法，构造方法包含了所有的field；而不是使用setter； -->
+			<property name="constructorBased" value="false" />
+
+		</javaModelGenerator>
+		<!--映射文件的包名和位置 -->
+		<sqlMapGenerator targetPackage="com.kai.demo.mapper"
+			targetProject="demo/src/main/java" />
+		<!--DAO的包名和位置 -->
+		<javaClientGenerator
+			targetPackage="com.kai.demo.dao" targetProject="demo/src/main/java"
+			type="XMLMAPPER">
+			<!-- 是否允许建立子包，对应Mysql的Schema -->
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+		<!--要生成哪些表 -->
+		<table schema="mybatis" tableName="%"
+			enableSelectByExample="false" enableDeleteByExample="false"
+			enableCountByExample="false" enableUpdateByExample="false"
+			selectByExampleQueryId="false">
+		</table>
+	</context>
+</generatorConfiguration>
